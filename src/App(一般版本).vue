@@ -2,98 +2,44 @@
 import { onMounted, onUpdated, ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "@/firebase";
-import {
-  collection,
-  onSnapshot,
-  addDoc,
-  doc,
-  deleteDoc,
-  updateDoc,
-  query,
-  orderBy,
-} from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 export default {
   setup() {
-    // firebase refs
-    const todoCollectionRef = collection(db, "todos");
-    const todoCollectionQuery = query(
-      todoCollectionRef,
-      orderBy("date", "desc")
-    );
-
     const todos = ref([
-      // {
-      //   id: "id1",
-      //   content: "go to school",
-      //   done: false,
-      // },
-      // {
-      //   id: "id2",
-      //   content: "buy a book",
-      //   done: true,
-      // },
+      {
+        id: "id1",
+        content: "go to school",
+        done: false,
+      },
+      {
+        id: "id2",
+        content: "buy a book",
+        done: true,
+      },
     ]);
-
-    // get todos
-    onMounted(async () => {
-      // const querySnapshot = await getDocs(collection(db, "todos"));
-      // let fdTodos = [];
-      // querySnapshot.forEach((doc) => {
-      //   console.log(doc.id, " => ", doc.data());
-      //   const todo = {
-      //     id: doc.id,
-      //     content: doc.data().content,
-      //     done: doc.data().done,
-      //   };
-      //   fdTodos.push(todo);
-      //   todos.value = fdTodos;
-      // });
-
-      onSnapshot(todoCollectionQuery, (querySnapshot) => {
-        const fdTodos = [];
-        querySnapshot.forEach((doc) => {
-          const todo = {
-            id: doc.id,
-            content: doc.data().content,
-            done: doc.data().done,
-          };
-          fdTodos.push(todo);
-        });
-        todos.value = fdTodos;
-      });
-    });
 
     // addtodo
     const addTodoContent = ref("");
     const addTodo = () => {
-      addDoc(todoCollectionRef, {
+      console.log("add");
+      const newTodo = {
+        id: uuidv4(),
         content: addTodoContent.value,
         done: false,
-        date: Date.now(),
-      });
-
-      // const newTodo = {
-      //   id: uuidv4(),
-      //   content: addTodoContent.value,
-      //   done: false,
-      // };
-      // todos.value.unshift(newTodo);
+      };
+      todos.value.unshift(newTodo);
       addTodoContent.value = "";
     };
 
     // delete Todo
     const deleteTodo = (id) => {
-      deleteDoc(doc(todoCollectionRef, id));
+      todos.value = todos.value.filter((todo) => todo.id !== id);
     };
-    // toggle Todo
+
     const doneTodo = (id) => {
       const index = todos.value.findIndex((todo) => todo.id === id);
-      updateDoc(doc(todoCollectionRef, id), {
-        done: !todos.value[index].done,
-      });
-
-      // console.log(index);
-      // todos.value[index].done = !todos.value[index].done;
+      console.log(index);
+      todos.value[index].done = !todos.value[index].done;
     };
 
     return { todos, addTodo, addTodoContent, deleteTodo, doneTodo };
@@ -103,7 +49,7 @@ export default {
 
 <template>
   <div class="badass-todo">
-    <div class="title has-text-centered">Firebase Todo</div>
+    <div class="title has-text-centered">Badass Todo</div>
 
     <form @submit.prevent="addTodo">
       <div class="field is-grouped mb-5">
