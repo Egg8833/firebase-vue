@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkvue3_firebase_0903"]=self["webpackChunkvue3_firebase_0903"]||[]).push([[443],{381:function(e,n,u){u.r(n),u.d(n,{default:function(){return b}});var a=u(252);const r={class:"about"},s=(0,a._)("h1",null,"This is an about page",-1),t=[s];function i(e,n){return(0,a.wg)(),(0,a.iD)("div",r,t)}var c=u(744);const f={},o=(0,c.Z)(f,[["render",i]]);var b=o}}]);
+//# sourceMappingURL=about.b692f56f.js.map
