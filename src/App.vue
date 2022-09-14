@@ -51,6 +51,7 @@ export default {
 
       onSnapshot(todoCollectionQuery, (querySnapshot) => {
         const fdTodos = [];
+        console.log(querySnapshot);
         querySnapshot.forEach((doc) => {
           const todo = {
             id: doc.id,
